@@ -101,24 +101,26 @@ def count_data(data):
         for response in after_networking:
             after[response] += 1
     
-    # print(before.values())
-    # print('Before networking:')
-    # for key, value in before.items():
-    #     if value > 1:
-    #         print('{}: {}'.format(key, value))
-    # print()
-    # print('After networking:')
-    # for key, value in after.items():
-    #     if value > 1:
-    #         print('{}: {}'.format(key, value))
+    print(before.values())
+    print('Before networking:')
+    for key, value in before.items():
+        if value > 1:
+            print('{}: {}'.format(key, value))
+    print()
+    print('After networking:')
+    for key, value in after.items():
+        if value > 1:
+            print('{}: {}'.format(key, value))
                      
                
 def main():
-    data = get_data('data_after.csv')
+    data = get_data('data.csv')
     clean_data(data)
-    #count_data(data)
+    try:
+        count_data(data)
+    except:
+        pass
     weights = determine_weights(data)
-    print(weights)
     return weights
     """Final output
     Array = [Person1[0,Person2Val,Person3Val...],Person2[Person1Val,0,Person3Val...etc]]
