@@ -18,8 +18,8 @@ def get_data(filename):
         reader = csv.reader(csvfile, delimiter=',')      
         for row in reader:  # row is a list of text
             row = row[1:len(row)]  # remove the timestamp column
-            if len(row) != 10:  # sanity check if number 1 to 10 are all present
-                raise Exception('One of the rows is not valid')
+            #if (len(row) != 10) or (len(row) != 5):  # sanity check if number 1 to 10 are all present
+             #   raise Exception('One of the rows is not valid' + str(len(row)))
             
             for i, col in enumerate(row):
                 # remove the trailing numbers, different delimiters are used so account for those
@@ -73,7 +73,10 @@ def determine_weights(data):
         for entry in person:
             for word in entry:
                 for compare_num,compare_person in enumerate(data):
-                    weights[num].append(0)
+                    try:
+                        weights[num][compare_num] = 0
+                    except:
+                        weights[num].append(0)
                     if compare_num != num:
                         for compare_entry in compare_person:
                             shared_response = False
@@ -85,6 +88,7 @@ def determine_weights(data):
                                 weights[num][compare_num] += 1
                     else:
                         pass
+    return weights
 
 
 def count_data(data):
@@ -98,21 +102,24 @@ def count_data(data):
             after[response] += 1
     
     # print(before.values())
-    print('Before networking:')
-    for key, value in before.items():
-        if value > 1:
-            print('{}: {}'.format(key, value))
-    print('After networking:')
-    for key, value in after.items():
-        if value > 1:
-            print('{}: {}'.format(key, value))
+    # print('Before networking:')
+    # for key, value in before.items():
+    #     if value > 1:
+    #         print('{}: {}'.format(key, value))
+    # print()
+    # print('After networking:')
+    # for key, value in after.items():
+    #     if value > 1:
+    #         print('{}: {}'.format(key, value))
                      
                
 def main():
-    data = get_data('data.csv')
+    data = get_data('data_after.csv')
     clean_data(data)
-    count_data(data)
-
+    #count_data(data)
+    weights = determine_weights(data)
+    print(weights)
+    return weights
     """Final output
     Array = [Person1[0,Person2Val,Person3Val...],Person2[Person1Val,0,Person3Val...etc]]
     """
